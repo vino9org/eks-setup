@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: vinobank
+  name: corebanking-sim
+  labels:
+    app: corebanking-sim
+spec:
+  selector:
+    matchLabels:
+      app: corebanking-sim
+  template:
+    metadata:
+      labels:
+        app: corebanking-sim
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: server
+          image: docker.io/sloppycoder/vinobank-corebanking-sim:0.1.0
+          imagePullPolicy: Always
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-cred
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-cred
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: aws-cred
+                  key: AWS_DEFAULT_REGION
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 5            
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5            
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 500m
+              memory: 384Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: vinobank
+  name: corebanking-sim
+  labels:
+    app: corebanking-sim
+spec:
+  type: ClusterIP
+  selector:
+    app: corebanking-sim
+  ports: 
+    - name: http
+      port: 8000
+

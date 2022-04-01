@@ -1,0 +1,9 @@
+{
+    "debit_customer_id": "CUS01FYS5XB5V2RBV52NYDEESNTP4",
+    "debit_account_id": "ACC01FYS5XB5VBJYNE91JQQ5BQZFB",
+    "credit_account_id": "ACC01FYS5XB5V2BGWBJ42A66RNT32",
+    "amount": 100.10,
+    "currency": "SGD",
+    "memo": "testing from curl",
+    "transaction_date": "2022-03-31"
+}

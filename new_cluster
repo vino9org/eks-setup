@@ -1,0 +1,2 @@
+eksctl create cluster -f cluster.yaml
+aws eks --region us-west-2 update-kubeconfig --name vinobank

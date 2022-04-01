@@ -1,0 +1,3 @@
+resources:
+  - corebanking_sim.yaml
+  - fund_transfer.yaml

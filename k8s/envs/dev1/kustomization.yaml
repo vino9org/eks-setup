@@ -1,0 +1,10 @@
+resources:
+  - namespace.yaml
+  - ../../base
+
+namespace: vinobank
+
+secretGenerator:
+  - name: aws-cred
+    envs:
+      - secrets.env

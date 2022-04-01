@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fund-transfer
+  labels:
+    app: fund-transfer
+spec:
+  selector:
+    matchLabels:
+      app: fund-transfer
+  template:
+    metadata:
+      labels:
+        app: fund-transfer
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: server
+          image: docker.io/sloppycoder/vinobank-fund-transfer:1.0.0-SNAPSHOT
+          imagePullPolicy: Always
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-cred
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-cred
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: aws-cred
+                  key: AWS_DEFAULT_REGION
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+            initialDelaySeconds: 5            
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: 8080
+            initialDelaySeconds: 5            
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 500m
+              memory: 384Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: vinobank
+  name: fund-transfer
+  labels:
+    app: fund-transfer
+spec:
+  type: LoadBalancer
+  selector:
+    app: fund-transfer
+  ports:
+    - name: http
+      port: 8080
