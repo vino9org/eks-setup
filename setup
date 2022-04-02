@@ -8,24 +8,29 @@
 
 set -e
 
-eksctl create cluster -f cluster.yaml
-aws eks --region us-west-2 update-kubeconfig --name vinobank
+COUNT=$(eksctl get cluster -o json | jq ".[].Name" | grep vinobank | wc -l)
 
-sleep 5
+if [ "$COUNT" = "0" ]; then
+  eksctl create cluster -f cluster.yaml
+  aws eks --region us-west-2 update-kubeconfig --name vinobank
+  sleep 5
+fi
+
+echo "EKS cluster created, proceed to setup cert-manager, aws-load-balancer-controller and AWS OpenTelemetry Distro"
 kubectl apply --validate=false \
   -f https://github.com/jetstack/cert-manager/releases/download/v1.5.4/cert-manager.yaml
-
 sleep 5
+
 # sometimes there's error when applying this for the first time.
 set +e
 kubectl apply -f aws-load-balancer-controller-v2_4_1_full.yaml
 sleep 5
 kubectl apply -f aws-load-balancer-controller-v2_4_1_full.yaml
-
 sleep 5
+
 set -e
 curl -s https://raw.githubusercontent.com/aws-observability/aws-otel-collector/main/deployment-template/eks/otel-container-insights-infra.yaml | kubectl apply -f -
-
 sleep 15
+
 kubectl get deployment -n kube-system aws-load-balancer-controller
 kubectl get pods -l name=aws-otel-eks-ci -n aws-otel-eks
