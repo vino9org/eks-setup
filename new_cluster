@@ -1,2 +1,32 @@
+#!/bin/bash
+
+# this script assumes the name of the EKS cluster is vinobank
+# please modify the following files if the cluster name is different
+#    cluster.yaml
+#    aws-load-balancer-controller-v2_4_1_full.yaml
+#
+#    tests/r
+
 eksctl create cluster -f cluster.yaml
 aws eks --region us-west-2 update-kubeconfig --name vinobank
+
+sleep 5
+kubectl apply --validate=false \
+  -f https://github.com/jetstack/cert-manager/releases/download/v1.5.4/cert-manager.yaml
+
+sleep 5
+kubectl apply -f aws-load-balancer-controller-v2_4_1_full.yaml
+# there maybe some error in the first time, retry to make sure everything gets applied
+sleep 5
+kubectl apply -f aws-load-balancer-controller-v2_4_1_full.yaml
+
+sleep 5
+curl -s https://raw.githubusercontent.com/aws-observability/aws-otel-collector/main/deployment-template/eks/otel-container-insights-infra.yaml | kubectl apply -f -
+
+sleep 15
+kubectl get deployment -n kube-system aws-load-balancer-controller
+kubectl get pods -l name=aws-otel-eks-ci -n aws-otel-eks
+
+export API_HOST=$(kubectl get ingress fund-transfer -n vinobank --output jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+echo API_HOST=$API_HOST

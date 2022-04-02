@@ -1,2 +1,8 @@
-API_HOST=$(kubectl get service fund-transfer -n vinobank --output jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-curl -s -H "content-type: application/json" -d @transfer_1.json $API_HOST:8080/transfers -v | jq .
+API_HOST=$(kubectl get ingress fund-transfer -n vinobank --output jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+if [ "$API_HOST" = "" ]; then
+   echo Cannot get hostname from ingress
+   exit 1
+fi
+
+curl -s -H "content-type: application/json" -d @transfer_1.json $API_HOST/transfers -v | jq .

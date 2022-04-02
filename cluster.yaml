@@ -9,3 +9,16 @@ nodeGroups:
   - name: group1
     instanceType: t3a.large
     desiredCapacity: 2
+    iam:
+      withAddonPolicies:
+        albIngress: true
+        cloudWatch: true
+
+iam:
+  withOIDC: true
+  serviceAccounts:
+  - metadata:
+      name: aws-load-balancer-controller
+      namespace: kube-system
+    wellKnownPolicies:
+      awsLoadBalancerController: true
