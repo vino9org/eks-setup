@@ -1,0 +1,7 @@
+{
+    "issuer": "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_8GAesOyAi",
+    "authorizationEndpoint": "https://vino9.auth.us-west-2.amazoncognito.com/oauth2/authorize",
+    "tokenEndpoint": "https://vino9.auth.us-west-2.amazoncognito.com/oauth2/token",
+    "userInfoEndpoint": "https://vino9.auth.us-west-2.amazoncognito.com/oauth2/userInfo",
+    "secretName": "oidc-cognito-secret"
+}

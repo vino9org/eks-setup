@@ -614,12 +614,6 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - secrets
-  verbs:
-  - get
-- apiGroups:
-  - ""
-  resources:
   - endpoints
   verbs:
   - get
@@ -826,7 +820,7 @@ spec:
     spec:
       containers:
       - args:
-        - --cluster-name=vinobank
+        - --cluster-name=your-cluster-name
         - --ingress-class=alb
         image: amazon/aws-alb-ingress-controller:v2.4.1
         livenessProbe:
