@@ -5,4 +5,6 @@ if [ "$API_HOST" = "" ]; then
    exit 1
 fi
 
-curl -s -H "content-type: application/json" -d @transfer_1.json $API_HOST/transfers -v | jq .
+curl --insecure -s -L --post301 -H "content-type: application/json" -d @transfer_1.json $API_HOST/transfers -v | jq .
+
+# curl -s -L  --post301 -H "content-type: application/json" -d @transfer_1.json http://tapi.vino9.net/transfers -v | jq .
