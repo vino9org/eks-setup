@@ -11,7 +11,7 @@ nodeGroups:
     desiredCapacity: 2
     iam:
       withAddonPolicies:
-        albIngress: true
+        awsLoadBalancerController: true
         cloudWatch: true
 
 iam:
