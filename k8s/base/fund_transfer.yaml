@@ -66,7 +66,7 @@ metadata:
   labels:
     app: fund-transfer
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: fund-transfer
   ports:
@@ -75,31 +75,32 @@ spec:
       protocol: TCP
 
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: fund-transfer
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/ssl-redirect: '443'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:211281185885:certificate/567ffc9e-a592-4345-8724-be2d81a525a5
-    alb.ingress.kubernetes.io/auth-type: oidc
-    alb.ingress.kubernetes.io/auth-scope: openid
-    alb.ingress.kubernetes.io/auth-session-timeout: '3600'
-    alb.ingress.kubernetes.io/auth-session-cookie: AWSELBAuthSessionCookie
-    alb.ingress.kubernetes.io/auth-on-unauthenticated-request: deny
-spec:
-  ingressClassName: alb
-  rules:
-    - http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: fund-transfer
-              port:
-                number: 8080
+# disable ingress for now
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: fund-transfer
+#   annotations:
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+#     alb.ingress.kubernetes.io/ssl-redirect: '443'
+#     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:211281185885:certificate/567ffc9e-a592-4345-8724-be2d81a525a5
+#     alb.ingress.kubernetes.io/auth-type: oidc
+#     alb.ingress.kubernetes.io/auth-scope: openid
+#     alb.ingress.kubernetes.io/auth-session-timeout: '3600'
+#     alb.ingress.kubernetes.io/auth-session-cookie: AWSELBAuthSessionCookie
+#     alb.ingress.kubernetes.io/auth-on-unauthenticated-request: deny
+# spec:
+#   ingressClassName: alb
+#   rules:
+#     - http:
+#         paths:
+#         - path: /
+#           pathType: Prefix
+#           backend:
+#             service:
+#               name: fund-transfer
+#               port:
+#                 number: 8080
 

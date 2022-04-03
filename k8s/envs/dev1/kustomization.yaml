@@ -4,16 +4,7 @@ resources:
 
 namespace: vinobank
 
-generatorOptions:
-  disableNameSuffixHash: true
-  
 secretGenerator:
   - name: aws-cred
     envs:
       - secrets.env
-  - name: oidc-cognito-secret
-    envs:
-      - cognito-app-client.env      
-
-patchesStrategicMerge:
-  - annotate-ingress.yaml
