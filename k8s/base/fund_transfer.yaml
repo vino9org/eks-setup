@@ -89,7 +89,7 @@ metadata:
     alb.ingress.kubernetes.io/auth-scope: openid
     alb.ingress.kubernetes.io/auth-session-timeout: '3600'
     alb.ingress.kubernetes.io/auth-session-cookie: AWSELBAuthSessionCookie
-    alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate
+    alb.ingress.kubernetes.io/auth-on-unauthenticated-request: deny
 spec:
   ingressClassName: alb
   rules:

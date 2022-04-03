@@ -2,23 +2,15 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: vinobank
-  region: us-west-2
+  name: {{cluster_name}}
+  region: {{region_name}}
 
 nodeGroups:
   - name: group1
     instanceType: t3a.large
+    minSize: 0
+    maxSize: 6
     desiredCapacity: 2
     iam:
       withAddonPolicies:
-        awsLoadBalancerController: true
         cloudWatch: true
-
-iam:
-  withOIDC: true
-  serviceAccounts:
-  - metadata:
-      name: aws-load-balancer-controller
-      namespace: kube-system
-    wellKnownPolicies:
-      awsLoadBalancerController: true
