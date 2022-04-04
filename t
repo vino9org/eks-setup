@@ -5,4 +5,5 @@ if [ "$API_HOST" = "" ]; then
    exit 1
 fi
 
+echo $API_HOST
 curl -s -H "content-type: application/json" -d @data/transfer_1.json http://${API_HOST}:8080/transfers -v | jq .
