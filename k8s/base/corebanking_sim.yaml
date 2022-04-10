@@ -35,6 +35,10 @@ spec:
                 secretKeyRef:
                   name: aws-cred
                   key: AWS_DEFAULT_REGION
+            - name: OLTP_COLLECTOR_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
           ports:
             - containerPort: 8000
               protocol: TCP

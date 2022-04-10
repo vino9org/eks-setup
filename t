@@ -1,7 +1,7 @@
 API_HOST=$(kubectl get service fund-transfer -n vinobank --output jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
 if [ "$API_HOST" = "" ]; then
-   echo Cannot get hostname from ingress
+   echo Cannot get hostname from service
    exit 1
 fi
 
