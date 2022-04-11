@@ -13,5 +13,6 @@ nodeGroups:
     desiredCapacity: 2
     iam:
       withAddonPolicies:
+        imageBuilder: true
         xRay: true
         cloudWatch: true

@@ -38,5 +38,5 @@ curl -s https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-containe
 # curl -s https://raw.githubusercontent.com/aws-observability/aws-otel-collector/main/deployment-template/eks/otel-container-insights-infra.yaml 
 kubectl apply -f otel-container-insights-infra.yaml
 
-sleep 25
+sleep 45
 kubectl get pods -l name=aws-otel-eks-ci -n aws-otel-eks
