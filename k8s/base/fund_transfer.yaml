@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: public.ecr.aws/vino9/vinobank-fund-transfer:1.0.2-SNAPSHOT
+          image: public.ecr.aws/vino9/vinobank-fund-transfer:1.0.3-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: AWS_ACCESS_KEY_ID
@@ -34,6 +34,16 @@ spec:
                 secretKeyRef:
                   name: aws-cred
                   key: AWS_DEFAULT_REGION
+            - name: LIMITS_API_URL
+              valueFrom:
+                secretKeyRef:
+                  name: aws-cred
+                  key: LIMITS_API_URL
+            - name: LIMITS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-cred
+                  key: LIMITS_API_KEY
             - name: OLTP_COLLECTOR_IP
               valueFrom:
                 fieldRef:
